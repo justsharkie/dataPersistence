@@ -46,7 +46,7 @@ angular
         $scope.saveBook = book => $scope.bookList.$save(book)
         $scope.itemId = $routeParams.itemId
         $scope.clearFields = function () {
-            if(confirm('Will this thing just fucking work?')){
+            if(confirm('Are you sure you want to delete this?')){
                 
             }
         }

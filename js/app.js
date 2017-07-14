@@ -34,6 +34,8 @@ angular
     })
     .controller('bookCtrl', function ($scope, $firebaseObject, $firebaseArray, $routeParams, $http) {
         const dbRef = firebase.database().ref().child('books')
+        const bookId = $routeParams.itemId
+        $scope.book = bookId ? $firebaseObject(dbRef.child(bookId)) : null
         $scope.bookList = $firebaseArray(dbRef)
         this.getBlankBook = () => ({
             title: '',
@@ -48,19 +50,21 @@ angular
             $scope.bookList.$add($scope.newBook);
             $scope.newBook = this.getBlankBook()
         }
-        $scope.removeBook = function (book) {
+        $scope.removeBook = function () {
             if (confirm('You really want to delete this book?')) {
-                $scope.bookList.$remove(book)
+                $scope.bookList.$remove(bookId)
             }
         }
         $scope.saveBook = book => $scope.bookList.$save(book)
-        $scope.itemId = $routeParams.itemId
         $scope.clearFields = function () {
             if (confirm('Are you sure you want to delete everything?')) {
-
+                // BELOW REMOVES ENTIRE DATABASE DATA
+                return dbRef.remove()
             }
         }
+    })
 
+    .controller('ImageCtrl', function (book, storageRefImages, $window) {
         /*  UPLOAD IMAGE CODE */
         this.handleSelectedFiles = book => {
             let files = book.selectedFiles
@@ -72,50 +76,48 @@ angular
             }
         }
 
-        function AddBookCtrl(book, storageRefImages, $window) {
-            this.uploadFile = (file, book) => {
-                const metadata = {
-                    contentType: file.type
-                };
-                let uploadTask = storageRefImages.child(file.name).put(file, metadata);
-                uploadTask.on('state_changed', function (snapshot) {
-                    let uploadProgress = (snapshot.bytesTranferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + uploadProgress + '% done');
-                    if (snapshot.bytesTranferred == snapshot.totalBytes) {
-                        setTimeout(() => {
-                            uploadProgress = 0;
-                            console.log('Upload is complete');
-                        }, 500);
-                    }
-                    switch (snapshot.state) {
-                        case 'paused':
-                            console.log('Upload is paused');
-                            break;
-                        case 'running':
-                            console.log('Upload is running');
-                            break;
-                    }
-                }, function (error) {
-                    switch (error.code) {
-                        case 'storage/unauthorized':
-                            break;
-                        case 'storage/canceled':
-                            break;
-                        case 'storage/unknown':
-                            break;
-                        default:
-                            console.error('UploadTask failed.')
-                    }
-                }, function () {
-                    let storagePath = uploadTask.snapshot.ref.fullPath
-                    let downloadURL = uploadTask.snapshot.downloadURL
-                    book.images.push({
-                        storagePath,
-                        downloadURL
-                    })
-                    $scope.bookList.$save()
+        this.uploadFile = (file, book) => {
+            const metadata = {
+                contentType: file.type
+            };
+            let uploadTask = storageRefImages.child(file.name).put(file, metadata);
+            uploadTask.on('state_changed', function (snapshot) {
+                let uploadProgress = (snapshot.bytesTranferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + uploadProgress + '% done');
+                if (snapshot.bytesTranferred == snapshot.totalBytes) {
+                    setTimeout(() => {
+                        uploadProgress = 0;
+                        console.log('Upload is complete');
+                    }, 500);
+                }
+                switch (snapshot.state) {
+                    case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        break;
+                    case 'storage/canceled':
+                        break;
+                    case 'storage/unknown':
+                        break;
+                    default:
+                        console.error('UploadTask failed.')
+                }
+            }, function () {
+                let storagePath = uploadTask.snapshot.ref.fullPath
+                let downloadURL = uploadTask.snapshot.downloadURL
+                book.images.push({
+                    storagePath,
+                    downloadURL
                 })
-            }
+                $scope.bookList.$save()
+            })
         }
     })
     .directive('fileInputModel', ['$parse', function ($parse) {
@@ -128,4 +130,4 @@ angular
                 })
             }
         }
-        }])
+    }])

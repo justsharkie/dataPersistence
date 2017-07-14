@@ -62,15 +62,19 @@
             margin-left: 50px;
         }
         
-        .clearBtn, .addBtn {
+        .clearBtn,
+        .addBtn {
             margin-top: 50px;
         }
+        
         .addForm {
             margin-top: 50px;
         }
+        
         .addForm input {
             margin-bottom: 10px;
         }
+
     </style>
 
     <meta charset="UTF-8">
@@ -82,40 +86,44 @@
 </head>
 
 <body id="body" ng-app="myApp">
-   <section ng-controller="bookCtrl">
-    <!-- topbar -->
-    <h1 class="h1 container-fluid text-center text-white" id="topbar">r/fantasy Top 10 Fantasy Standalones (2017)</h1>
-    <!-- sidebar -->
-    <section class="row">
-        <ul class="list-group col-sm-2">
-            <li class="list-group-item list-group-item-action" ng-repeat="book in bookList track by book.$id">
-                <a ng-href="/#!/details/{{book.id}}" class="link">
-                    <h5>{{book.title}}</h5>
-                    <h6 class="text-muted">{{book.author}}</h6>
-                </a>
-            </li>
-        </ul>
-        <!-- insert card using angular -->
-        <div ng-view class="col-sm-8"></div>
+    <section ng-controller="bookCtrl">
+        <!-- topbar -->
+        <h1 class="h1 container-fluid text-center text-white" id="topbar">r/fantasy Top 10 Fantasy Standalones (2017)</h1>
+        <!-- sidebar -->
+        <section class="row">
+            <ul class="list-group col-sm-2">
+                <li class="list-group-item list-group-item-action" ng-repeat="book in bookList track by book.$id">
+                    <a ng-href="/#!/details/{{book.$id}}" class="link">
+                        <h5>{{book.title}}</h5>
+                        <h6 class="text-muted">{{book.author}}</h6>
+                    </a>
+                </li>
+            </ul>
+            <!-- insert card using angular -->
+            <div ng-view class="col-sm-8"></div>
 
-    </section>
-    <form ng-submit="addBook()" ng-show="adding" class="col-sm-4 offset-5 addForm">
-        <input type="text" ng-model="newBook.title" placeholder="Title">
-        <input type="text" ng-model="newBook.author" placeholder="Author">
-        <input type="text" ng-model="newBook.description" placeholder="Description">
-        <input type="text" ng-model="newBook.date" placeholder="Date Published">
-        <input type="text" ng-model="newBook.publisher" placeholder="Publisher">
-        
-        <input type="file" class="form-control" file-input-model="ctrl.newBook.selectedFiles" ng-model="newBook.image">
-        
-        <input type="submit" value="Add" class="btn btn-primary" ng-click="adding=false">
-        <button class="btn btn-secondary" ng-click="adding=false">Cancel</button>
-    </form>
-    <div class="row">
-        <button class="btn btn-primary col-sm-2 offset-6 addBtn" ng-click="adding=true">Add New Book</button>
-        <button class="btn btn-danger col-sm-2 clearBtn" ng-click="clearFields()">Clear Fields</button>
-    </div>
-    </section>
+        </section>
+        </section>
+        <section>
+           <div ng-contoller="ImageCtrl">
+            <form ng-submit="addBook()" ng-show="adding" class="col-sm-4 offset-5 addForm">
+                <input type="text" ng-model="newBook.title" placeholder="Title">
+                <input type="text" ng-model="newBook.author" placeholder="Author">
+                <input type="text" ng-model="newBook.description" placeholder="Description">
+                <input type="text" ng-model="newBook.date" placeholder="Date Published">
+                <input type="text" ng-model="newBook.publisher" placeholder="Publisher">
+
+                <input type="file" class="form-control" file-input-model="ctrl.newBook.selectedFiles" ng-model="newBook.image">
+
+                <input type="submit" value="Add" class="btn btn-primary" ng-click="adding=false">
+                <button class="btn btn-secondary" ng-click="adding=false">Cancel</button>
+            </form>
+            <div class="row">
+                <button class="btn btn-primary col-sm-2 offset-6 addBtn" ng-click="adding=true">Add New Book</button>
+                <button class="btn btn-danger col-sm-2 clearBtn" ng-click="clearFields()">Clear Fields</button>
+            </div>
+            </div>
+        </section>
     <!-- Load angular -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <!-- ngRoute -->

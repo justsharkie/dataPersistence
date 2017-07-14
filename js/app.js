@@ -1,17 +1,58 @@
 angular
-    .module('myApp', ['ngRoute'])
-    .config(function($routeProvider){
+    .module('myApp', ['ngRoute', 'firebase'])
+    .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'views/placeholder.html',
-                controller: 'PlaceholderCtrl'
+                controller: 'bookCtrl'
             })
             .when('/details/:itemId', {
                 templateUrl: '/views/card.html',
-                controller: 'DetailCtrl'
+                controller: 'bookCtrl'
             })
-            .otherwise( {redirectTO: '/'} )
+            .otherwise({
+                redirectTo: '/'
+            })
     })
+    .constant('firebaseConfig', {
+        apiKey: "AIzaSyA2snvldJm9sPJT-0FCSnxnPeaB3jQEMTc",
+        authDomain: "webapps-9058d.firebaseapp.com",
+        databaseURL: "https://webapps-9058d.firebaseio.com",
+        projectId: "webapps-9058d",
+        storageBucket: "webapps-9058d.appspot.com",
+        messagingSenderId: "668287105690"
+    })
+    .run(firebaseConfig => firebase.initializeApp(firebaseConfig))
+    .controller('bookCtrl', function ($scope, $firebaseObject, $firebaseArray, $routeParams, $http) {
+        const dbRef = firebase.database().ref().child('books')
+        $scope.bookList = $firebaseArray(dbRef)
+        this.getBlankBook = () => ({
+            title: '',
+            author: '',
+            description: '',
+            date: '',
+            publisher: '',
+        })
+        $scope.newBook = this.getBlankBook()
+        $scope.addBook = () => {
+            $scope.bookList.$add($scope.newBook);
+            $scope.newBook = this.getBlankBook()
+        }
+        $scope.removeBook = function (book) {
+            if (confirm('You really want to delete this book?')) {
+                $scope.bookList.$remove(book)
+            }
+        }
+        $scope.saveBook = book => $scope.bookList.$save(book)
+        $scope.itemId = $routeParams.itemId
+        $scope.clearFields = function () {
+            if(confirm('Will this thing just fucking work?')){
+                
+            }
+        }
+    })
+
+/*
     .controller('PlaceholderCtrl', function($scope){
         $scope.itemId = [];
         $scope.showAll = false
@@ -32,4 +73,4 @@ angular
             .then(({data}) => {
                 $scope.books = data
             })
-    })
+    })*/

@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <style>
         #body {
             margin-bottom: 30px;
             background-color: #e6e6e6;
         }
-        .link, .link:hover, .link:active, .link:focus {
+        
+        .link,
+        .link:hover,
+        .link:active,
+        .link:focus {
             text-decoration: none;
             color: #000;
         }
+        
         #topbar {
             width: 100vw;
             height: 50px;
@@ -39,6 +45,32 @@
             width: auto;
             margin-top: 20px;
         }
+        
+        input {
+            display: block;
+            width: 300px;
+            margin-bottom: 20px;
+            height: 40px;
+        }
+        
+        input:placeholder-shown {
+            font-family: sans-serif;
+            font-size: 15px;
+        }
+        
+        .clearBtn {
+            margin-left: 50px;
+        }
+        
+        .clearBtn, .addBtn {
+            margin-top: 50px;
+        }
+        .addForm {
+            margin-top: 50px;
+        }
+        .addForm input {
+            margin-bottom: 10px;
+        }
     </style>
 
     <meta charset="UTF-8">
@@ -50,12 +82,13 @@
 </head>
 
 <body id="body" ng-app="myApp">
+   <section ng-controller="bookCtrl">
     <!-- topbar -->
     <h1 class="h1 container-fluid text-center text-white" id="topbar">r/fantasy Top 10 Fantasy Standalones (2017)</h1>
     <!-- sidebar -->
-    <section class="row" ng-controller="AllDetailCtrl">
+    <section class="row">
         <ul class="list-group col-sm-2">
-            <li class="list-group-item list-group-item-action" ng-repeat="book in books">
+            <li class="list-group-item list-group-item-action" ng-repeat="book in bookList track by book.$id">
                 <a ng-href="/#!/details/{{book.id}}" class="link">
                     <h5>{{book.title}}</h5>
                     <h6 class="text-muted">{{book.author}}</h6>
@@ -64,12 +97,34 @@
         </ul>
         <!-- insert card using angular -->
         <div ng-view class="col-sm-8"></div>
-    </section>
 
-    <!-- import javascript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.js"></script>
-    <script src="js/app.js"></script>
+    </section>
+    <form ng-submit="addBook()" ng-show="adding" class="col-sm-4 offset-5 addForm">
+        <input type="text" ng-model="newBook.title" placeholder="Title">
+        <input type="text" ng-model="newBook.author" placeholder="Author">
+        <input type="text" ng-model="newBook.description" placeholder="Description">
+        <input type="text" ng-model="newBook.date" placeholder="Date Published">
+        <input type="text" ng-model="newBook.publisher" placeholder="Publisher">
+        <input type="text" placeholder="Image URL">
+        <input type="submit" value="Add" class="btn btn-primary" ng-click="adding=false">
+        <button class="btn btn-secondary" ng-click="adding=false">Cancel</button>
+    </form>
+    <div class="row">
+        <button class="btn btn-primary col-sm-2 offset-6 addBtn" ng-click="adding=true">Add New Book</button>
+        <button class="btn btn-danger col-sm-2 clearBtn" ng-click="clearFields()">Clear Fields</button>
+    </div>
+    </section>
+    <!-- Load angular -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <!-- ngRoute -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+    <!-- Load firebase -->
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+    <!-- Load angularFire -->
+    <script type="text/javascript" src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <!-- custom script -->
+    <script type="text/javascript" src="js/app.js"></script>
 
 </body>
+
 </html>

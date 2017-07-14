@@ -105,7 +105,9 @@
         <input type="text" ng-model="newBook.description" placeholder="Description">
         <input type="text" ng-model="newBook.date" placeholder="Date Published">
         <input type="text" ng-model="newBook.publisher" placeholder="Publisher">
-        <input type="text" placeholder="Image URL">
+        
+        <input type="file" class="form-control" file-input-model="ctrl.newBook.selectedFiles" ng-model="newBook.image">
+        
         <input type="submit" value="Add" class="btn btn-primary" ng-click="adding=false">
         <button class="btn btn-secondary" ng-click="adding=false">Cancel</button>
     </form>

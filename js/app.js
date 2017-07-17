@@ -22,8 +22,11 @@ angular
         storageBucket: "webapps-9058d.appspot.com",
         messagingSenderId: "668287105690"
     })
-    .run(firebaseConfig => firebase.initializeApp(firebaseConfig))
-    .service('storageRefRoot', function () {
+    .run(function(firebaseConfig) {
+        firebase.initializeApp(firebaseConfig)
+    })
+    // .run(firebaseConfig => firebase.initializeApp(firebaseConfig))
+    /*.service('storageRefRoot', function () {
         return firebase.storage().ref()
     })
     .service('storageRefImages', function (storageRefRoot) {
@@ -31,31 +34,32 @@ angular
     })
     .service('dbRefRoot', function () {
         return firebase.database().ref()
-    })
+    })*/
     .controller('bookCtrl', function ($scope, $firebaseObject, $firebaseArray, $routeParams, $http) {
-        const dbRef = firebase.database().ref().child('books')
-        const bookId = $routeParams.itemId
-        $scope.book = bookId ? $firebaseObject(dbRef.child(bookId)) : null
-        $scope.bookList = $firebaseArray(dbRef)
-        this.getBlankBook = () => ({
+        var dbRef = firebase.database().ref().child('books');
+        var bookId = $routeParams.itemId;
+        $scope.itemId = bookId;
+        $scope.book = bookId ? $firebaseObject(dbRef.child(bookId)) : null;
+        $scope.bookList = $firebaseArray(dbRef);
+        this.getBlankBook = function(){ ({
             title: '',
             author: '',
             description: '',
             date: '',
             publisher: '',
             image: ''
-        })
+        })}
         $scope.newBook = this.getBlankBook()
-        $scope.addBook = () => {
+        $scope.addBook = function(){
             $scope.bookList.$add($scope.newBook);
             $scope.newBook = this.getBlankBook()
         }
-        $scope.removeBook = function () {
+        $scope.removeBook = function (book) {
             if (confirm('You really want to delete this book?')) {
-                $scope.bookList.$remove(bookId)
+                $scope.bookList.$remove(book);
             }
         }
-        $scope.saveBook = book => $scope.bookList.$save(book)
+        $scope.saveBook = function(book){ $scope.bookList.$save(book)}
         $scope.clearFields = function () {
             if (confirm('Are you sure you want to delete everything?')) {
                 // BELOW REMOVES ENTIRE DATABASE DATA
@@ -64,8 +68,7 @@ angular
         }
     })
 
-    .controller('ImageCtrl', function (book, storageRefImages, $window) {
-        /*  UPLOAD IMAGE CODE */
+    /*.controller('ImageCtrl', function (book, storageRefImages, $window) {
         this.handleSelectedFiles = book => {
             let files = book.selectedFiles
             if ((files !== undefined) && files.length) {
@@ -130,4 +133,4 @@ angular
                 })
             }
         }
-    }])
+    }])*/

@@ -25,7 +25,6 @@ angular
     .run(function(firebaseConfig) {
         firebase.initializeApp(firebaseConfig)
     })
-    // .run(firebaseConfig => firebase.initializeApp(firebaseConfig))
     /*.service('storageRefRoot', function () {
         return firebase.storage().ref()
     })

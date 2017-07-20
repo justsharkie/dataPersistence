@@ -116,7 +116,7 @@
                 <input type="file" class="form-control" file-input-model="ctrl.newBook.selectedFiles" ng-model="newBook.image">
 
                 <input type="submit" value="Add" class="btn btn-primary" ng-click="adding=false">
-                <button class="btn btn-secondary" ng-click="adding=false">Cancel</button>
+                <div class="btn btn-secondary" ng-click="adding=false">Cancel</div>
             </form>
             <div class="row">
                 <button class="btn btn-primary col-sm-2 offset-6 addBtn" ng-click="adding=true">Add New Book</button>
@@ -133,7 +133,7 @@
     <!-- Load angularFire -->
     <script type="text/javascript" src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
     <!-- custom script -->
-    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/app.module.js"></script>
 
 </body>
 

@@ -56,7 +56,7 @@ angular
         }
         $scope.clearFields = function () {
             if (confirm('Are you sure you want to delete everything?')) {
-                return dbRef.$remove();
+                return dbRef.$remove('books');
             }
         }
     }) // end controller

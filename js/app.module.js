@@ -46,8 +46,16 @@ angular
             $scope.bookList.$add($scope.newBook)
             $scope.newBook = this.getBlankBook()
         }
-        $scope.saveBook = (book) => {
-            $scope.bookList.$save(book.$id)
+        $scope.saveBook = () => {
+            $scope.book.$save()
+            $scope.editTitle=false
+            $scope.editAuthor=false
+            $scope.editDesc=false
+            $scope.editDate=false
+            $scope.editPub=false
+        }
+        $scope.isEditing = () => {
+            return $scope.editTitle || $scope.editAuthor || $scope.editDesc || $scope.editDate || $scope.editPub
         }
         $scope.removeBook = (book) => {
             if (confirm('You really want to delete this book')) {
@@ -58,10 +66,5 @@ angular
             if(confirm('Are you sure you want to remove all these fields?')) {
                 $scope.newBook = this.getBlankBook()
             }
-        }
-        // FUTURE SHAYNA - add code to make previous/next work
-        $scope.arrows = (book) => {
-            $scope.bookList.$indexFor(book)
-            $scope.bookList.$keyAt(book)
         }
     }) // end controller

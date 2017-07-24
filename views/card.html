@@ -33,11 +33,11 @@
             <input type="text" ng-model="book.publisher" ng-show="editPub">
             <br>
             <div>
-                <button class="btn btn-success saveBtn" ng-show="editTitle || editAuthor || editDesc || editDate || editPub" ng-click="saveBook(book); editTitle=false; editAuthor=false; editDesc=false; editDate=false; editPub=false">Save</button>
+                <button class="btn btn-success saveBtn" ng-show="isEditing()" ng-click="saveBook()">Save</button>
             </div>
             <div class="row">
                 <a ng-href="/#!/details/{{itemId-1}}" class="btn btn-success col-sm-4 offset-3">Previous</a>
-                <a ng-href="/#!/details/{{itemId - 1 + 2}}" class="btn btn-secondary col-sm-4 offset-1">Next</a>
+                <a ng-href="/#!/details/{{itemId-1+2}}" class="btn btn-secondary col-sm-4 offset-1">Next</a>
             </div>
             <button class="btn btn-danger col-sm-4 offset-8 delete" ng-click="removeBook(book)">Delete</button>
         </form>

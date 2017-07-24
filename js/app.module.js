@@ -42,21 +42,26 @@ angular
             })
         }
         $scope.newBook = this.getBlankBook()
-        $scope.addBook = function () {
+        $scope.addBook = () => {
             $scope.bookList.$add($scope.newBook)
             $scope.newBook = this.getBlankBook()
         }
-        $scope.saveBook = function (book) {
-            $scope.bookList.$save($scope.bookList.$indexFor(book.$id))
+        $scope.saveBook = (book) => {
+            $scope.bookList.$save(book.$id)
         }
-        $scope.removeBook = function (book) {
+        $scope.removeBook = (book) => {
             if (confirm('You really want to delete this book')) {
                 $scope.bookList.$remove($scope.bookList.$indexFor(book.$id))
             }
         }
-        $scope.clearFields = function () {
-            if (confirm('Are you sure you want to delete everything?')) {
-                return dbRef.$remove('books');
+        $scope.clearFields = () => {
+            if(confirm('Are you sure you want to remove all these fields?')) {
+                $scope.newBook = this.getBlankBook()
             }
+        }
+        // FUTURE SHAYNA - add code to make previous/next work
+        $scope.arrows = (book) => {
+            $scope.bookList.$indexFor(book)
+            $scope.bookList.$keyAt(book)
         }
     }) // end controller

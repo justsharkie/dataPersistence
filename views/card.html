@@ -1,18 +1,45 @@
+<style>
+    .delete {
+        margin-top: 20px;
+        cursor: pointer;
+    }
+    
+    .bigInput {
+        width: 100%;
+        height: 300px;
+    }
+    
+    .saveBtn {
+        margin-bottom: 50px;
+    }
+
+</style>
+
 <section class="card col-sm-12 offset-1">
     <div class="row">
         <div class="col-sm-4">
             <img ng-src="{{book.image}}" alt="" class="image">
         </div>
-        <div class="card-block col-sm-8">
-            <h4 class="card-title">{{book.title}}</h4>
-            <p class="card-subtitle text-muted">{{book.author}}</p>
-            <p class="card-text">{{book.description}}</p>
-            <p class="card-text">{{book.date}}</p>
-            <p class="card-text">{{book.publisher}}</p>
+        <form class="card-block col-sm-8">
+            <h4 class="card-title" ng-click="editTitle=true" ng-hide="editTitle">{{book.title}}</h4>
+            <input type="text" ng-model="book.title" ng-show="editTitle">
+            <p class="card-subtitle text-muted" ng-click="editAuthor=true" ng-hide="editAuthor">{{book.author}}</p>
+            <input type="text" ng-model="book.author" ng-show="editAuthor">
+            <p class="card-text" ng-click="editDesc=true" ng-hide="editDesc">{{book.description}}</p>
+            <textarea ng-model="book.description" ng-show="editDesc" class="bigInput"></textarea>
+            <p class="card-text" ng-click="editDate=true" ng-hide="editDate">{{book.date}}</p>
+            <input type="text" ng-model="book.date" ng-show="editDate">
+            <p class="card-text" ng-click="editPub=true" ng-hide="editPub">{{book.publisher}}</p>
+            <input type="text" ng-model="book.publisher" ng-show="editPub">
+            <br>
+            <div>
+                <button class="btn btn-success saveBtn" ng-show="editTitle || editAuthor || editDesc || editDate || editPub" ng-click="saveBook(book); editTitle=false; editAuthor=false; editDesc=false; editDate=false; editPub=false">Save</button>
+            </div>
             <div class="row">
                 <a ng-href="/#!/details/{{itemId-1}}" class="btn btn-success col-sm-4 offset-3">Previous</a>
                 <a ng-href="/#!/details/{{itemId - 1 + 2}}" class="btn btn-secondary col-sm-4 offset-1">Next</a>
             </div>
-        </div>
+            <button class="btn btn-danger col-sm-4 offset-8 delete" ng-click="removeBook(book)">Delete</button>
+        </form>
     </div>
 </section>
